@@ -33,18 +33,21 @@ pub fn release(repo: Repository) -> SemanticResult {
         println!("No release needed. Staying at {}", current.to_tag());
     } else {
         languages::put(&repo, proposed.clone()).unwrap();
+        languages::add(&repo).unwrap();
+        let oid = utils::commit(
+            &repo,
+            &format!("build: version bump to {} [skip ci]", &proposed.to_tag()),
+        );
+        utils::tag(&repo, proposed);
+
         let path = repo.path().parent().unwrap().join("CHANGELOG.md");
         let mut fp = fs::File::create(path).unwrap();
         core::changelog(&repo)
             .iter()
             .for_each(|m| writeln!(fp, "{}", m).unwrap());
-        languages::add(&repo).unwrap();
+        
         utils::add(&repo, Path::new("CHANGELOG.md"));
-        utils::commit(
-            &repo,
-            &format!("build: version bump to {} [skip ci]", &proposed.to_tag()),
-        );
-        utils::tag(&repo, proposed);
+        utils::amend(&repo, oid);
     }
     Ok(())
 }
@@ -137,5 +140,15 @@ mod test {
         let repo = git2::Repository::open(dir.path()).unwrap();
         let new = languages::get(&repo).unwrap();
         assert_eq!(current, new);
+
+        update(&repo, Path::new("README.md"), "new thing", "feat: cool thing");
+        let current = languages::get(&repo).unwrap();
+        release(repo).unwrap();
+        let repo = git2::Repository::open(dir.path()).unwrap();
+        let new = languages::get(&repo).unwrap();
+        assert_ne!(current, new);      
+        let changelog = fs::read_to_string(repo.path().parent().unwrap().join(Path::new("CHANGELOG.md"))).unwrap();
+        println!("{}", changelog);
+        assert!(changelog.starts_with("## v0.2.0"));
     }
 }

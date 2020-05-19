@@ -3,7 +3,7 @@
 use crate::*;
 use std::path::Path;
 
-use git2::{Commit, Repository, Revwalk, Signature, Sort};
+use git2::{Commit, Repository, Revwalk, Signature, Sort, Oid};
 use regex::RegexSet;
 use semver::Version;
 
@@ -136,7 +136,7 @@ pub fn add(repo: &Repository, path: &Path) {
 }
 
 /// Commit files with the message given.
-pub fn commit(repo: &Repository, message: &str) {
+pub fn commit(repo: &Repository, message: &str) -> Oid {
     let oid = repo
         .index()
         .expect("Could not get index")
@@ -159,7 +159,12 @@ pub fn commit(repo: &Repository, message: &str) {
         &repo.find_tree(oid).expect("could not find tree"),
         parent.iter().collect::<Vec<&Commit>>().as_slice(),
     )
-    .expect("Failed to commit.");
+    .expect("Failed to commit.")
+}
+
+pub fn amend(repo: &Repository, oid: Oid) {
+    let commit = repo.find_commit(oid).unwrap();
+    commit.amend(Some("HEAD"), None, None, None, None, None).unwrap();
 }
 
 /// Tag the repo with the version.

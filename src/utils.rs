@@ -9,15 +9,6 @@ use semver::Version;
 
 /// Returns all of the versions of the application in order with versions[0] being the first tagged version.
 pub fn versions(repo: &Repository) -> Vec<Version> {
-    println!(
-        "{:?}",
-        repo.tag_names(None)
-            .unwrap()
-            .iter()
-            .map(|s| s.unwrap().to_string())
-            .collect::<Vec<String>>()
-            .join("\n")
-    );
     let mut tags: Vec<Version> = repo
         .tag_names(Some("v*.*.*"))
         .unwrap()
@@ -30,10 +21,9 @@ pub fn versions(repo: &Repository) -> Vec<Version> {
 
 /// Creates and returns a repo walker.
 pub fn walker(repo: &Repository, start: Option<Version>, stop: Option<Version>) -> Revwalk {
-    println!("walker({:?}..{:?})", start, stop);
+    log::debug!("walker({:?}..{:?})", start, stop);
     let mut walker = repo.revwalk().expect("could not create walker");
     if start.is_none() && stop.is_none() {
-        log::debug!("start and stop are none, pushing HEAD to walker");
         walker.push_head().expect("could not push HEAD to walker");
     } else if start.is_some() {
         walker
@@ -65,13 +55,6 @@ pub fn walker(repo: &Repository, start: Option<Version>, stop: Option<Version>) 
 pub fn walkers(repo: &Repository) -> Vec<Revwalk> {
     // collect all of the versions.
     let mut tags: Vec<Version> = versions(&repo);
-    println!(
-        "tags: {}",
-        tags.iter()
-            .map(|v| v.to_tag())
-            .collect::<Vec<String>>()
-            .join("\n")
-    );
     tags.reverse();
 
     let mut start: Option<Version> = None;
@@ -286,12 +269,6 @@ mod test {
             "build: version bump",
         );
         assert_eq!(walkers(&repo).len(), 2);
-        walkers(&repo).pop().unwrap().for_each(|c| {
-            println!(
-                "{:?}",
-                repo.find_commit(c.unwrap()).unwrap().message().unwrap()
-            )
-        });
         assert_eq!(walkers(&repo).pop().unwrap().count(), 1);
 
         // Should be ..v0.1.0, v0.1.0..HEAD, each with one commit

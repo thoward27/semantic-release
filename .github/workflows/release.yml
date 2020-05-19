@@ -1,0 +1,35 @@
+name: Stable Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Fetch
+        run: |
+          git fetch --force
+          git fetch --tags --force
+      - name: Check
+        run: cargo check
+      - name: Test
+        run: cargo test
+      - name: Configure Git
+        run: |
+          git config --global user.name "Github Actions"
+          git config --global user.email "action@github.com"
+          curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s 2.14.1
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cargo run -- --debug release
+          ./bin/hub push origin
+          ./bin/hub release create -m "$(cargo run -q -- notes)" v$(cargo run -q -- version)
+  

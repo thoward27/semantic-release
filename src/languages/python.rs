@@ -33,7 +33,7 @@ pub fn get(repo: &Repository) -> Option<Version> {
 
 pub fn put(repo: &Repository, version: Version) {
     let mut config = load(&repo).unwrap();
-    config["tool.poetry"]["version"] = value(version.to_string());
+    config["tool"]["poetry"]["version"] = value(version.to_string());
     save(&repo, config);
 }
 
@@ -49,5 +49,20 @@ mod test {
         let abspath = dir.path().join("pyproject.toml");
         fs::write(&abspath, "[tool.poetry]\nversion=\"0.1.0\"").unwrap();
         assert_eq!(get(&repo), Some(Version::new(0, 1, 0)));
+    }
+
+    #[test]
+    fn get_put() {
+        let dir = tempdir().unwrap();
+        let repo = git2::Repository::init(dir.path()).unwrap();
+        let relpath = Path::new("pyproject.toml");
+        update(
+            &repo,
+            relpath,
+            "[tool.poetry]\nversion=\"0.1.0\"",
+            "Initial Commit",
+        );
+        put(&repo, Version::new(1, 0, 0));
+        assert_eq!(get(&repo), Some(Version::new(1, 0, 0)));
     }
 }

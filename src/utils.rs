@@ -3,7 +3,7 @@
 use crate::*;
 use std::path::Path;
 
-use git2::{Commit, Repository, Revwalk, Signature, Sort, Oid};
+use git2::{Commit, Oid, Repository, Revwalk, Signature, Sort};
 use regex::RegexSet;
 use semver::Version;
 
@@ -164,7 +164,9 @@ pub fn commit(repo: &Repository, message: &str) -> Oid {
 
 pub fn amend(repo: &Repository, oid: Oid) {
     let commit = repo.find_commit(oid).unwrap();
-    commit.amend(Some("HEAD"), None, None, None, None, None).unwrap();
+    commit
+        .amend(Some("HEAD"), None, None, None, None, None)
+        .unwrap();
 }
 
 /// Tag the repo with the version.

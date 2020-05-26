@@ -45,7 +45,7 @@ pub fn release(repo: Repository) -> SemanticResult {
         core::changelog(&repo)
             .iter()
             .for_each(|m| writeln!(fp, "{}", m).unwrap());
-        
+
         utils::add(&repo, Path::new("CHANGELOG.md"));
         utils::amend(&repo, oid);
     }
@@ -141,13 +141,24 @@ mod test {
         let new = languages::get(&repo).unwrap();
         assert_eq!(current, new);
 
-        update(&repo, Path::new("README.md"), "new thing", "feat: cool thing");
+        update(
+            &repo,
+            Path::new("README.md"),
+            "new thing",
+            "feat: cool thing",
+        );
         let current = languages::get(&repo).unwrap();
         release(repo).unwrap();
         let repo = git2::Repository::open(dir.path()).unwrap();
         let new = languages::get(&repo).unwrap();
-        assert_ne!(current, new);      
-        let changelog = fs::read_to_string(repo.path().parent().unwrap().join(Path::new("CHANGELOG.md"))).unwrap();
+        assert_ne!(current, new);
+        let changelog = fs::read_to_string(
+            repo.path()
+                .parent()
+                .unwrap()
+                .join(Path::new("CHANGELOG.md")),
+        )
+        .unwrap();
         println!("{}", changelog);
         assert!(changelog.starts_with("## v0.2.0"));
     }

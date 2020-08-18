@@ -43,7 +43,7 @@ pub fn release(repo: Repository) -> SemanticResult {
             &format!("build: version bump to {} [skip ci]", &proposed.to_tag()),
         );
         utils::tag(&repo, proposed);
-        
+
         // TODO: this fails in Github Actions yet appears to work
         let path = repo.path().parent().unwrap().join("CHANGELOG.md");
         let mut fp = fs::File::create(path).unwrap();

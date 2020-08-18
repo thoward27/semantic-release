@@ -1,4 +1,8 @@
 
+## v0.1.4
+ - build: version bump to v0.1.4 [skip ci] - info@tomhoward.codes (028ac89200593e979775849786bc050b5d65a1fb)
+ - fix: changelog - info@tomhoward.codes (06bb861185e537a6fce06ed3ae8e06ab5cd98804)
+
 ## v0.1.3
  - build: version bump to v0.1.3 [skip ci] - info@tomhoward.codes (cd4ab9d96e8bf19871fb7d1a2266e0866d626a02)
  - fix: bunch of small fixes - info@tomhoward.codes (90a058d1500802fa370054b5e2c0987b5e411a26)

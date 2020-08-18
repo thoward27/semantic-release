@@ -1,21 +1,9 @@
-mod commands;
-mod core;
-mod languages;
-mod utils;
+use semantic_release::*;
 
-#[cfg(test)]
-mod test_utils;
-
-use std::fmt;
-
-use git2::Repository;
-use semver::Version;
 use structopt::StructOpt;
 
-use commands::*;
-
 #[derive(Debug, StructOpt)]
-struct Semantic {
+pub struct Semantic {
     #[structopt(short, long)]
     debug: bool,
 
@@ -28,49 +16,20 @@ struct Semantic {
 
 #[derive(Debug, StructOpt)]
 enum Command {
+    /// Compute and display the suggested version bump.
     Bump {},
+
+    /// Set the project version to the next suggested.
     Version {},
+
+    /// Create release notes.
     Notes {},
+
+    /// Generate a changelog.
     Changelog {},
+
+    /// Build an entire release.
     Release {},
-}
-
-#[derive(Debug)]
-pub enum SemanticError {
-    BumpError,
-    VersionError,
-    NotesError,
-    ChangelogError,
-    ReleaseError,
-    IOError,
-}
-
-#[derive(PartialEq, Eq, Debug, PartialOrd, Ord)]
-pub enum Bump {
-    None,
-    Prerelease,
-    // Build
-    Patch,
-    Minor,
-    Major,
-}
-
-impl fmt::Display for Bump {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", format!("{:?}", self).to_lowercase())
-    }
-}
-
-pub type SemanticResult = Result<(), SemanticError>;
-
-trait ToTag {
-    fn to_tag(&self) -> String;
-}
-
-impl ToTag for Version {
-    fn to_tag(&self) -> String {
-        format!("v{}", self)
-    }
 }
 
 fn main() {

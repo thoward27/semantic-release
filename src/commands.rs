@@ -6,11 +6,13 @@ use git2::Repository;
 
 use crate::*;
 
+/// Compute and print the suggested version bump.
 pub fn bump(repo: Repository) -> SemanticResult {
     println!("{}", core::bump(&repo));
     Ok(())
 }
 
+/// Generate a changelog.
 pub fn changelog(repo: Repository) -> SemanticResult {
     let mut fp = fs::File::create(repo.path().parent().unwrap().join("CHANGELOG.md")).unwrap();
     let changelog = core::changelog(&repo);
@@ -20,12 +22,14 @@ pub fn changelog(repo: Repository) -> SemanticResult {
     Ok(())
 }
 
+/// Print release notes.
 pub fn notes(repo: Repository) -> SemanticResult {
     let notes = core::notes(&repo);
     println!("{}", notes.join("\n"));
     Ok(())
 }
 
+/// Create an entire release.
 pub fn release(repo: Repository) -> SemanticResult {
     let current = languages::get(&repo).unwrap();
     let proposed = core::version(&repo);
@@ -52,6 +56,7 @@ pub fn release(repo: Repository) -> SemanticResult {
     Ok(())
 }
 
+/// Update the project version.
 pub fn version(repo: Repository) -> SemanticResult {
     let current = languages::get(&repo).unwrap();
     let proposed = core::version(&repo);

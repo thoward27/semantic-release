@@ -30,6 +30,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cargo run -- --debug release
+          cargo run -- --debug changelog
+          cargo fmt
+          git commit -a --amend --no-edit
           ./bin/hub push origin
-          ./bin/hub release create -m "$(cargo run -q -- notes)" v$(cargo run -q -- version)
+          ./bin/hub release create -m "$(cargo run -q -- version):" -m "$(cargo run -q -- notes)" v$(cargo run -q -- version)
   

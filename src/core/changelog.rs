@@ -13,7 +13,7 @@ pub fn changelog(repo: &Repository) -> Vec<String> {
             .collect();
         messages.extend(commits);
         messages.extend(vec![format!(
-            "## {}",
+            "\n## {}",
             versions.get(index).unwrap_or(&"wip".to_string()).clone()
         )]);
     }

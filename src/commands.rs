@@ -43,7 +43,8 @@ pub fn release(repo: Repository) -> SemanticResult {
             &format!("build: version bump to {} [skip ci]", &proposed.to_tag()),
         );
         utils::tag(&repo, proposed);
-
+        
+        // TODO: this fails in Github Actions yet appears to work
         let path = repo.path().parent().unwrap().join("CHANGELOG.md");
         let mut fp = fs::File::create(path).unwrap();
         core::changelog(&repo)
@@ -96,7 +97,7 @@ mod test {
         assert!(changelog(repo).is_ok());
 
         let result = fs::read_to_string(dir.path().join("CHANGELOG.md")).unwrap();
-        assert!(result.starts_with("## wip\n - not conventional "))
+        assert!(result.starts_with("\n## wip\n - not conventional "))
     }
 
     #[test]
@@ -165,6 +166,6 @@ mod test {
         )
         .unwrap();
         println!("{}", changelog);
-        assert!(changelog.starts_with("## v0.2.0"));
+        assert!(changelog.starts_with("\n## v0.2.0"));
     }
 }

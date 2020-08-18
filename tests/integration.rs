@@ -39,7 +39,7 @@ fn test_rust() {
 
     // Check the resulting changelog.
     let result = assert_changelog_contains(&dir, "Initial commit");
-    assert!(result.starts_with("## wip"));
+    assert!(result.starts_with("\n## wip"));
 
     // At this point, version should do nothing since we have no conventional commits.
     assert!(version(new_repo(&dir)).is_ok());
@@ -64,9 +64,8 @@ fn test_rust() {
 
     // Now that there is a tagged commit, version should start with v0.1.1
     let result = assert_changelog_contains(&dir, "fix: readme");
-    assert!(result.starts_with("## v0.1.1"));
+    assert!(result.starts_with("\n## v0.1.1"));
 
     update(&repo, readme_path, "# Goodbye world", "feat: new readme");
     assert!(release(new_repo(&dir)).is_ok());
-    
 }

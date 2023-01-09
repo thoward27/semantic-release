@@ -5,15 +5,15 @@ use crate::*;
 
 pub fn notes(repo: &Repository) -> Vec<String> {
     log::debug!("generating notes");
-    let version: String = if utils::is_head_tagged(&repo) {
+    let version: String = if utils::is_head_tagged(repo) {
         "HEAD".to_string()
     } else {
-        match utils::versions(&repo).last() {
+        match utils::versions(repo).last() {
             Some(version) => version.to_tag(),
             None => "HEAD".to_string(),
         }
     };
-    let mut commits: Vec<String> = utils::walkers(&repo)
+    let mut commits: Vec<String> = utils::walkers(repo)
         .pop()
         .unwrap()
         .map(|c| repo.find_commit(c.unwrap()).unwrap())

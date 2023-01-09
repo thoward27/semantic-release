@@ -14,27 +14,27 @@ fn path(repo: &Repository) -> PathBuf {
 }
 
 fn load(repo: &Repository) -> Result<Document> {
-    let config: String = fs::read_to_string(path(&repo))?;
+    let config: String = fs::read_to_string(path(repo))?;
     Ok(config
         .parse::<Document>()
         .expect("Could not parse Cargo.toml"))
 }
 
 fn save(repo: &Repository, config: Document) {
-    let mut file = fs::File::create(path(&repo)).unwrap();
+    let mut file = fs::File::create(path(repo)).unwrap();
     file.write_all(config.to_string_in_original_order().as_bytes())
         .unwrap();
 }
 
 pub fn get(repo: &Repository) -> Option<Version> {
-    let config = load(&repo).ok()?;
+    let config = load(repo).ok()?;
     Version::parse(config["package"]["version"].as_str()?).ok()
 }
 
 pub fn put(repo: &Repository, version: Version) {
-    let mut config = load(&repo).unwrap();
+    let mut config = load(repo).unwrap();
     config["package"]["version"] = value(version.to_string());
-    save(&repo, config);
+    save(repo, config);
 }
 
 #[cfg(test)]

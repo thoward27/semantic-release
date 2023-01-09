@@ -4,8 +4,8 @@ use crate::*;
 
 pub fn version(repo: &Repository) -> Version {
     log::debug!("running version");
-    let mut proposed = languages::get(&repo).expect("couldn't get version");
-    match core::bump::bump(&repo) {
+    let mut proposed = languages::get(repo).expect("couldn't get version");
+    match core::bump::bump(repo) {
         Bump::Major => {
             if proposed.major == 0 {
                 proposed.increment_minor()

@@ -1,2 +1,4 @@
 [target.x86_64-unknown-linux-gnu]
-image = "semantic/x86_64-unknown-linux-gnu"
+pre-build = [
+    "apt-get update && apt-get install -qq libz-dev"
+]

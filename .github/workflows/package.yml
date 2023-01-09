@@ -53,7 +53,6 @@ jobs:
       - name: Build
         run: |
           cargo install cross
-          docker build -t semantic/${{ matrix.target }} -f ./Dockerfiles/${{ matrix.target }} .
           cross build --release --target=${{ matrix.target }}
       - name: Attach Binary
         env:

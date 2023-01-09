@@ -7,8 +7,8 @@ pub struct Semantic {
     #[structopt(short, long)]
     debug: bool,
 
-    #[structopt(short, long)]
-    write: bool,
+    // #[structopt(short, long)]
+    // write: bool,
 
     #[structopt(subcommand)]
     cmd: Command,

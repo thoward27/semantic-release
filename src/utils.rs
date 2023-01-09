@@ -54,18 +54,18 @@ pub fn walker(repo: &Repository, start: Option<Version>, stop: Option<Version>) 
 /// Returns a vector of walkers, the entire history of the project.
 pub fn walkers(repo: &Repository) -> Vec<Revwalk> {
     // collect all of the versions.
-    let mut tags: Vec<Version> = versions(&repo);
+    let mut tags: Vec<Version> = versions(repo);
     tags.reverse();
 
     let mut start: Option<Version> = None;
     let mut stop: Option<Version> = tags.pop();
     let mut walkers: Vec<Revwalk> = vec![];
     loop {
-        walkers.push(walker(&repo, start, stop.clone()));
+        walkers.push(walker(repo, start, stop.clone()));
         // If there's nothing left to get, push up to HEAD.
         if tags.is_empty() {
-            if stop.is_some() && !is_head_tagged(&repo) {
-                walkers.push(walker(&repo, stop, None));
+            if stop.is_some() && !is_head_tagged(repo) {
+                walkers.push(walker(repo, stop, None));
             }
             break;
         } else {
@@ -78,7 +78,7 @@ pub fn walkers(repo: &Repository) -> Vec<Revwalk> {
 
 /// Determines if the HEAD is tagged.
 pub fn is_head_tagged(repo: &Repository) -> bool {
-    if let Some(version) = versions(&repo).pop() {
+    if let Some(version) = versions(repo).pop() {
         let latest_tag = version.to_tag();
         let tagged = repo
             .revparse_single(&latest_tag)

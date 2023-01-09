@@ -4,10 +4,10 @@ use crate::utils;
 use crate::*;
 
 pub fn bump(repo: &Repository) -> Bump {
-    if utils::is_head_tagged(&repo) {
+    if utils::is_head_tagged(repo) {
         Bump::None
     } else {
-        utils::walkers(&repo)
+        utils::walkers(repo)
             .pop()
             .unwrap()
             .map(|c| utils::commit_bump(&repo.find_commit(c.unwrap()).unwrap()))

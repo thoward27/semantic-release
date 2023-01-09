@@ -1,6 +1,10 @@
 
+## v0.1.5
+ - build: version bump to v0.1.5 [skip ci] - info@tomhoward.codes (eb60c4c83eb87f911e58bcf5b3ef1d512012e9af)
+ - fix: clippy (#3) - thomas@zumper.com (2dbbeb8632fcaab928a0ef5f2e6eb9f643c5a867)
+
 ## v0.1.4
- - build: version bump to v0.1.4 [skip ci] - info@tomhoward.codes (028ac89200593e979775849786bc050b5d65a1fb)
+ - build: version bump to v0.1.4 [skip ci] - info@tomhoward.codes (10a33df7da8b3528a572e55322a7ba948c7678f0)
  - fix: changelog - info@tomhoward.codes (06bb861185e537a6fce06ed3ae8e06ab5cd98804)
 
 ## v0.1.3

@@ -9,7 +9,6 @@ pub struct Semantic {
 
     // #[structopt(short, long)]
     // write: bool,
-
     #[structopt(subcommand)]
     cmd: Command,
 }

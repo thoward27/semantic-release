@@ -1,6 +1,10 @@
 
+## v0.1.6
+ - build: version bump to v0.1.6 [skip ci] - info@tomhoward.codes (f75ba73cbcd684da9b5bdc532ca69e9b8a6fa320)
+ - fix: vendor openssl - thomas@zumper.com (51ec3cfb2f60420e414fd7b54883b0aa9315ef45)
+
 ## v0.1.5
- - build: version bump to v0.1.5 [skip ci] - info@tomhoward.codes (eb60c4c83eb87f911e58bcf5b3ef1d512012e9af)
+ - build: version bump to v0.1.5 [skip ci] - info@tomhoward.codes (2e2b12167c2e334223e8d393fe42ff9837d461fe)
  - fix: clippy (#3) - thomas@zumper.com (2dbbeb8632fcaab928a0ef5f2e6eb9f643c5a867)
 
 ## v0.1.4

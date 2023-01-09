@@ -105,7 +105,7 @@ pub fn commit_bump(commit: &Commit) -> Bump {
     log::debug!("commit message: {}", commit.summary().unwrap());
     // check if breaking change is in the message
     // check what it starts with: regex ^(type)(\(scope\)(! breaking change)?: )
-    let set = RegexSet::new(&[
+    let set = RegexSet::new([
         r"(test|build|chore|ci|docs|perf|refactor|revert|style)(\([\w ]+\))?: \w+.*",
         r"fix(\([\w ]+\))?: \w+.*",
         r"feat(\([\w ]+\))?: \w+.*",
